@@ -240,5 +240,4 @@ int main() {
 	cout << SudokuQuadrantChecker(B, sizeof(B) / sizeof(B[0])) << endl; // 3,4,5,9
 	cout << SudokuQuadrantChecker(C, sizeof(C) / sizeof(C[0])) << endl; // 2
 	return 0;
-
 }
