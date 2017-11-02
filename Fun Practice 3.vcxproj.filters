@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="2_Calculator.cpp">
+    <ClCompile Include="8_ParallelSums.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
