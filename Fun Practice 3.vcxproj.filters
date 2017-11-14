@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ShortestPath.cpp">
+    <ClCompile Include="10_CityTraffic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

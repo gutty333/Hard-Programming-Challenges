@@ -12,6 +12,9 @@ For example: if arr is [16, 22, 35, 8, 20, 1, 21, 11], then your program should 
 using namespace std;
 
 
+// NOT FINISHED
+
+
 // bubble sort 
 void bubblesort(int arr[], int size)
 {
