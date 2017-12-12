@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="10_CityTraffic.cpp" />
+    <ClCompile Include="11_WeightedPath.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{607FC734-623F-43EA-BFA7-A655A53AC8E5}</ProjectGuid>
