@@ -18,5 +18,8 @@
     <ClCompile Include="12_FarthestNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="13_VertexCovering.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
