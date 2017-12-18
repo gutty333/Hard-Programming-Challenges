@@ -1,0 +1,4 @@
+﻿  11_WeightedPath.cpp
+c:\users\carlo\documents\github\fun-practice-3\11_weightedpath.cpp(135): warning C4018: '<': signed/unsigned mismatch
+c:\users\carlo\documents\github\fun-practice-3\11_weightedpath.cpp(189): warning C4715: 'WeightedPath': not all control paths return a value
+  Fun Practice 3.vcxproj -> C:\Users\carlo\Documents\GitHub\Fun-Practice-3\Debug\Fun Practice 3.exe

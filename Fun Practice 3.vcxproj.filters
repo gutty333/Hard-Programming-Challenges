@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="11_WeightedPath.cpp">
+    <ClCompile Include="12_FarthestNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

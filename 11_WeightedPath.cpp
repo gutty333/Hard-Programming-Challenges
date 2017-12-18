@@ -11,23 +11,22 @@ An example of strArr may be: ["4","A","B","C","D","A|B|1","B|D|9","B|C|3","C|D|4
 #include <queue>
 #include <map>
 #include <sstream>
+#include <algorithm>
 using namespace std;
 
 /*
 For this problem we can utilize the concept of single source shortest path by implementing Dijkstra's algorithm
-Reusing BFS as a base, we now need to perform an edge relaxation on the most path to each node
+Reusing BFS as a base, we now need to perform an edge relaxation on the most optimal path for each node
 When an optimal path is found we have to update its cost and its parent
 
 Before starting each node will have a cost of infinity and for each iteration of BFS we are checking if the current path is a better choice than the previous path found for this node. 
 */
-
 
 // global variables
 const string defaultParent = "unknown";
 const int defaultCost = 1000 * 100;
 
 map <string, int> hashTable; // hash table to quickly reference the nodes
-
 
 // structure representing a weighted connection in our graph
 struct edgeConnection
@@ -41,7 +40,6 @@ struct node
 {
 	string name;
 	int cost;
-	bool visit;
 	string parent;
 	vector <edgeConnection> connections;
 };
@@ -57,13 +55,11 @@ void createGraph(vector <node*>& graph, string nodeValues[], int size)
 		graph[x - 1]->name = nodeValues[x];
 		graph[x - 1]->cost = defaultCost;
 		graph[x - 1]->parent = defaultParent;
-		graph[x - 1]->visit = false;
 
 		// adding to our hash table
 		hashTable[nodeValues[x]] = x - 1;
 	}
 }
-
 
 // method to make the connections
 void makeConnections(vector <node*>& graph, string neighbors[], int index, int size)
@@ -100,6 +96,7 @@ void makeConnections(vector <node*>& graph, string neighbors[], int index, int s
 	}
 }
 
+
 string WeightedPath(string strArr[], int size)
 {
 	// getting the total number of nodes for our graph
@@ -114,81 +111,84 @@ string WeightedPath(string strArr[], int size)
 	// making the edge connections
 	makeConnections(graph, strArr, nodeSize + 1, size);
 
-	/*cout << endl << endl << "Original Graph" << endl;
-	for (int x = 0; x < graph.size(); x++)
-	{
-		cout << "Current node is " << graph[x]->name << endl;
-		cout << "Hash value is " << hashTable[graph[x]->name] << endl;
-
-		if (graph[x]->connections.size() > 0)
-		{
-			cout << "Connections are:" << endl;
-
-			for (int y = 0; y < graph[x]->connections.size(); y++)
-			{
-
-				cout << "Node is " << graph[x]->connections[y].neighbor << " the edge weight is " << graph[x]->connections[y].edgeWeight << endl;
-			}
-		}
-		cout << endl << endl;
-
-	}*/
 
 	string source = graph[0]->name;
 	string destination = graph[graph.size() - 1]->name;
 
 	// doing our operations for the single source shortest path
 	// first we set up a queue and insert the source node
-	// note the cost of our source is default to zero
+	// note the cost of our source is set to zero
 	queue <node*> list;
 	graph[0]->cost = 0;
 	list.push(graph[0]);
-
 
 	while (!list.empty())
 	{
 		// get current node from our queue to analyze
 		node* current = list.front();
-		current->visit = true;
 		list.pop();
 
-		for (int x = 0; x < current->connections.size(); x++)
+		// loop to check the neighbors of the current node
+		if (current->name != destination)
 		{
-			int index = hashTable[current->connections[x].neighbor];
-			int edgecost = current->connections[x].edgeWeight;
-
-			if (graph[index]->visit == false)
+			for (int x = 0; x < current->connections.size(); x++)
 			{
-				// condition to check if the current path is more optimal than the last
-				// if true we perform edge relaxation and update its parent
-				// note that every unvisited node is also added to our queue
-				if (current->cost + edgecost < graph[index]->cost)
+				int index = hashTable[current->connections[x].neighbor];
+				int edgecost = current->connections[x].edgeWeight;
+
+				if (graph[index]->name != current->parent)
 				{
-					// here we update its cost and parent
-					graph[index]->cost = current->cost + edgecost;
-					graph[index]->parent = current->name;
+					// condition to check if the current path is more optimal than the last
+					// if true we perform edge relaxation and update its parent
+					if (current->cost + edgecost < graph[index]->cost)
+					{
+						// here we update its cost and parent
+						graph[index]->cost = current->cost + edgecost;
+						graph[index]->parent = current->name;
+
+
+						// adding to our queue
+						list.push(graph[index]);
+					}
 				}
-
-
-				// adding to our queue
-				list.push(graph[index]);
 			}
 		}
 	}
 
-	// if no path was found reaching our destination
+	// condition to check if we were able to reach the destination
 	if (graph[hashTable[destination]]->parent == defaultParent)
 	{
 		return "-1";
 	}
-	return "test";
+	else
+	{
+		// collecting our shortest path
+		string result;
 
-	
+		node* current = graph[hashTable[destination]];
+
+		// we start at the destination and collect the parents in each iteration
+		while (current)
+		{
+			result += current->name;
+			result += '-';
+
+			if (current->parent == defaultParent)
+			{
+				result.pop_back();
+				reverse(result.begin(), result.end());
+				return result;
+			}
+			else
+			{
+				current = graph[hashTable[current->parent]];
+			}
+		}
+	}
 }
 
 int main() 
 {
-
 	string A[] = { "4", "A", "B", "C", "D", "A|B|1", "B|D|9", "B|C|3", "C|D|4" };
 	string B[] = { "7", "A", "B", "C", "D", "E", "F", "G", "A|B|1", "A|E|9", "B|C|2", "C|D|1", "D|F|2", "E|D|6", "F|G|2" };
 	string C[] = { "4", "A", "B", "C", "D", "A|B|2", "C|B|11", "C|D|3", "B|D|2" };
