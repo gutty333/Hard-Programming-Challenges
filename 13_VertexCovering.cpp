@@ -12,11 +12,47 @@ The graph will have at least 2 vertices and all the vertices in the graph will b
 #include <vector>
 #include <map>
 #include <queue>
+#include <algorithm>
 using namespace std;
+
+/*
+one approach is to check if each of the connection are possible based on the nodes provided in the 3rd element
+if the connection does not check, we would add it to our list of left out connection
+*/
+
+// structure representing a node in our graph
+struct node
+{
+	char name;
+	vector <char> neighbors;
+};
+
+
+// method for creating our graph with the specified nodes
+void createGraph(vector <node*>& graph, string values[])
+{
+	// removing unnecessary characters from the first element in order to extract the node values
+	values[0].erase(remove(values[0].begin(), values[0].end(), ','), values[0].end());
+	values[0].erase(remove(values[0].begin(), values[0].end(), ')'), values[0].end());
+	values[0].erase(remove(values[0].begin(), values[0].end(), '('), values[0].end());
+
+	cout << "this is now " << values[0] << endl;
+
+	for (int x = 0; x < values[0].length(); x++)
+	{
+		graph.push_back(new node);
+
+	}
+}
 
 string VertexCovering(string strArr[]) 
 {
 
+	vector <node*> graph;
+
+	createGraph(graph, strArr);
+
+	return "yes";
 }
 
 int main() 
@@ -26,8 +62,8 @@ int main()
 	string C[] = { "(X,Y,Z,Q)", "(X-Y,Y-Q,Y-Z)", "(Z,Y,Q)" };
 
 	cout << VertexCovering(A) << endl; // yes
-	cout << VertexCovering(A) << endl; // (A-B,A-D,B-D)
-	cout << VertexCovering(A) << endl; // yes
+	cout << VertexCovering(B) << endl; // (A-B,A-D,B-D)
+	cout << VertexCovering(C) << endl; // yes
 
 	return 0;
 }
