@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="13_VertexCovering.cpp">
+    <ClCompile Include="14_HamiltonianPath.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

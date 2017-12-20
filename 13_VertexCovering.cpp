@@ -16,43 +16,72 @@ The graph will have at least 2 vertices and all the vertices in the graph will b
 using namespace std;
 
 /*
-one approach is to check if each of the connection are possible based on the nodes provided in the 3rd element
+one approach is to check if each of the connections are possible based on the nodes provided in the 3rd element
 if the connection does not check, we would add it to our list of left out connection
 */
 
-// structure representing a node in our graph
-struct node
+// method to check if the current pair of nodes check based on the specified nodes
+bool checkConnections(char node1, char node2, string nodes)
 {
-	char name;
-	vector <char> neighbors;
-};
-
-
-// method for creating our graph with the specified nodes
-void createGraph(vector <node*>& graph, string values[])
-{
-	// removing unnecessary characters from the first element in order to extract the node values
-	values[0].erase(remove(values[0].begin(), values[0].end(), ','), values[0].end());
-	values[0].erase(remove(values[0].begin(), values[0].end(), ')'), values[0].end());
-	values[0].erase(remove(values[0].begin(), values[0].end(), '('), values[0].end());
-
-	cout << "this is now " << values[0] << endl;
-
-	for (int x = 0; x < values[0].length(); x++)
+	// loop to check if any of the provided nodes covers this specified connection
+	for (int x = 0; x < nodes.length(); x++)
 	{
-		graph.push_back(new node);
-
+		if (nodes[x] == node1 || nodes[x] == node2)
+		{
+			return true;
+		}
 	}
+
+	return false;
 }
 
 string VertexCovering(string strArr[]) 
 {
+	string result;
 
-	vector <node*> graph;
+	// getting the connections from the second element, we also remove any unnecessary characters
+	string connections = strArr[1];
+	connections.erase(remove(connections.begin(), connections.end(), ','), connections.end());
+	connections.erase(remove(connections.begin(), connections.end(), ')'), connections.end());
+	connections.erase(remove(connections.begin(), connections.end(), '('), connections.end());
+	connections.erase(remove(connections.begin(), connections.end(), '-'), connections.end());
 
-	createGraph(graph, strArr);
+	// getting the nodes from the third element
+	string nodes = strArr[2];
+	nodes.erase(remove(nodes.begin(), nodes.end(), ','), nodes.end());
+	nodes.erase(remove(nodes.begin(), nodes.end(), ')'), nodes.end());
+	nodes.erase(remove(nodes.begin(), nodes.end(), '('), nodes.end());
 
-	return "yes";
+	// loop to analyze each of the connections
+	for (int x = 0; x < connections.length(); x += 2)
+	{
+		// if the current connection does not check than add it to our result of left out connections
+		if (!checkConnections(connections[x], connections[x + 1], nodes))
+		{
+			if (result.empty())
+			{
+				result.push_back('(');
+			}
+
+			// adding our missing connection to our result
+			result.push_back(connections[x]);
+			result.push_back('-');
+			result.push_back(connections[x + 1]);
+			result.push_back(',');
+		}
+	}
+
+	if (result.size() > 0)
+	{
+		result.pop_back(); // removing the extra comma
+		result.push_back(')'); // adding closing tag
+
+		return result;
+	}
+	else
+	{
+		return "yes";
+	}
 }
 
 int main() 
