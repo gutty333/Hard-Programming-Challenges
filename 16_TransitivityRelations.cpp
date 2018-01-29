@@ -9,19 +9,15 @@ What your program should determine is whether or not the matrix, which represent
 #include <string>
 using namespace std;
 
-string TransitivityRelations(string strArr[], int size) {
+// NOT FINISHED
 
-	// code goes here   
-	return strArr[0];
+string TransitivityRelations(string strArr[], int size) 
+{
 
 }
 
-int main() {
-
-	// keep this function call here
-	/* Note: In C++ you first have to initialize an array and set
-	it equal to the stdin to test your code with arrays. */
-
+int main() 
+{
 	string A[] = { "(1,1,1)", "(0,1,1)", "(0,1,1)" };
 	string B[] = { "(0,1,0,0)", "(0,0,1,0)", "(0,0,1,1)", "(0,0,0,1)" };
 	string C[] = { "(1,1,1)", "(1,0,0)", "(0,1,0)" };
