@@ -9,6 +9,8 @@ have the function OptimalAssignments(strArr) read strArr which will represent an
 #include <sstream>
 using namespace std;
 
+// NOT FINISHED
+
 
 bool linearSearch(vector <int>, int);
 
