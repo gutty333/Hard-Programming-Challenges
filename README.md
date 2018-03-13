@@ -4,4 +4,6 @@ Hard programing challenges from coderbyte
 ### Highlights ###  
 Folders and Cows  
 Longest Common Subsequence  
-Graph Traversal  
+Graph Traversal (DFS and BFS)  
+Chess Algorithms  
+Greedy Algorithms  
