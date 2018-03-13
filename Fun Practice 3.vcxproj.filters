@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="23_QuickKnight.cpp">
+    <ClCompile Include="33_CountingAnagrams.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

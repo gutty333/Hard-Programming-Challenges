@@ -7,9 +7,11 @@ have the function StepWalking(num) take the num parameter being passed which wil
 #include <string>
 using namespace std;
 
+
+
 int StepWalking(int num) 
 {
-
+	
 }
 
 int main() 
