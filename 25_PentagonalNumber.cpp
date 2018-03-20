@@ -7,6 +7,7 @@ have the function PentagonalNumber(num) read num which will be a positive intege
 #include <string>
 using namespace std;
 
+// NOT FINISHED
 
 int PentagonalNumber(int num) 
 {
