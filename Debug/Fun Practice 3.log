@@ -1,9 +1,11 @@
-﻿Build started 3/20/2018 5:41:13 PM.
+﻿Build started 3/27/2018 3:55:16 PM.
      1>Project "C:\Users\gutty333\Documents\Visual Studio 2013\Projects\Fun Practice 3\Fun Practice 3\Fun Practice 3.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt 37_AlphabetRunEncryption.cpp
          37_AlphabetRunEncryption.cpp
-     1>c:\users\gutty333\documents\visual studio 2013\projects\fun practice 3\fun practice 3\37_alphabetrunencryption.cpp(46): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\gutty333\documents\visual studio 2013\projects\fun practice 3\fun practice 3\37_alphabetrunencryption.cpp(47): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\gutty333\documents\visual studio 2013\projects\fun practice 3\fun practice 3\37_alphabetrunencryption.cpp(63): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\gutty333\documents\visual studio 2013\projects\fun practice 3\fun practice 3\37_alphabetrunencryption.cpp(69): warning C4018: '<' : signed/unsigned mismatch
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\gutty333\Documents\Visual Studio 2013\Projects\Fun Practice 3\Debug\Fun Practice 3.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\gutty333\Documents\Visual Studio 2013\Projects\Fun Practice 3\Debug\Fun Practice 3.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\gutty333\Documents\Visual Studio 2013\Projects\Fun Practice 3\Debug\Fun Practice 3.lib" /MACHINE:X86 Debug\37_AlphabetRunEncryption.obj
          Fun Practice 3.vcxproj -> C:\Users\gutty333\Documents\Visual Studio 2013\Projects\Fun Practice 3\Debug\Fun Practice 3.exe
@@ -11,4 +13,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.56
+Time Elapsed 00:00:01.09

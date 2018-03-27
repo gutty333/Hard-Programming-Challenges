@@ -15,12 +15,11 @@ The input string will only contains lowercase characters (a...z). There are also
 #include <string>
 using namespace std;
 
-// NOT FINISHED
+void sequenceBreak(string&, char, char, bool&, bool&);
 
 /*
 as we traverse the string we check if next character is an increment or decrement alphabetically
-we keep track of our starting letter
-and ending letter
+we keep track of our starting letter and ending letter
 
 when sequence breaks, if it broke due to a letter
 we write out the pair (cdef) = bg
@@ -42,28 +41,26 @@ string AlphabetRunEncryption(string str)
 	bool backward = false;
 
 	string result = "";
+	string temp = "";
 
 	// traverse the string
 	for (int current = 0; current < str.length(); current++)
 	{
-		cout << "current is " << str[current] << endl;
-		cout << "start is " << start << endl;
-		cout << "end is " << end << endl << endl;
-
 		// condition to determine a possible sequence start
 		if (start == NULL)
 		{
 			start = str[current];
 			end = str[current];
 		}
-		// forward sequence
-		else if (str[current] == char(end + 1))
+		// forward sequence = a->b->c etc 
+		// providing a bound check in case of neighboring characters that belong to the S rule
+		else if (str[current] == char(end + 1) && current < str.length() - 2 && str[current + 2] != 'S')
 		{
 			end = str[current];
 			forward = true;
 		}
-		// backward sequence
-		else if (str[current] == char(end - 1))
+		// backward sequence = c->b->a etc
+		else if (str[current] == char(end - 1) && current < str.length()-2 && str[current + 2] != 'S')
 		{
 			end = str[current];
 			backward = true;
@@ -72,54 +69,62 @@ string AlphabetRunEncryption(string str)
 		else if (str[current] == 'S')
 		{
 			// first check for no repeats before appending
-			if (result[result.length() - 1] == start)
+			if (!result.empty() && result[result.length() - 1] == start)
 			{
-				result += end;
-				
+				result.push_back(end);
 			}
 			else
 			{
-				result += start + end;
+				result.push_back(start);
+				result.push_back(end);
 			}
 
-			// reseting our start and end characters
+			// reseting our start and end characters to analyze a new sequence
 			start = end = NULL;
 		}
 		// condition for repeat in letters
 		else if (str[current] == 'N')
 		{
-			result += start;
+			// fix possible sequence break
+			if (end != start)
+			{
+				sequenceBreak(result, start, str[current-2], forward, backward);
+			}
+
+			// append repeating character
+			result.push_back(end);
 
 			// reseting our start and end characters
 			start = end = NULL;
 		}
-		// single letter between characters 
+		// single letter between characters going to the right direction
 		else if (str[current] == 'R')
 		{
 			// checking for repeats
-			if (result[result.length() - 1] == char(start-1))
+			if (!result.empty() && result[result.length() - 1] == char(start - 1))
 			{
-				result += char(start+1);
-
+				result.push_back(char(start + 1));
 			}
 			else
 			{
-				result += char(start-1) + char(start+1);
+				result.push_back(char(start - 1));
+				result.push_back(char(start + 1));
 			}
 
 			// reseting our start and end characters
 			start = end = NULL;
 		}
+		// single letter going to the left direction
 		else if (str[current] == 'L')
 		{
-			if (result[result.length() - 1] == char(start + 1))
+			if (!result.empty() && result[result.length() - 1] == char(start + 1))
 			{
-				result += char(start - 1);
-
+				result.push_back(char(start - 1));
 			}
 			else
 			{
-				result += char(start + 1) + char(start - 1);
+				result.push_back(char(start + 1));
+				result.push_back(char(start - 1));
 			}
 
 			// reseting our start and end characters
@@ -128,50 +133,78 @@ string AlphabetRunEncryption(string str)
 		// if no other conditions are met a sequence was broken due to different characters
 		else
 		{
-			cout << "we broke sequence " << endl;
-			// checking the direction
-			if (forward)
+			// will analyze sequence only when all valid character pertaining to the sequence are gathered
+			// if not analyzed we continue appending 
+			if ((start != char(end + 1) && start != char(end - 1) && start != end) &&
+				!(current == str.length() - 2 && str[current + 1] >= 'a' && str[current + 1] <= 'z') &&
+				current != str.length()-1)
 			{
-				// avoiding repeats
-				if (!result.empty() && result[result.length() - 1] == char(start - 1))
-				{
-					result += char(end+1);
+				sequenceBreak(result, start, end, forward, backward);
 
-				}
-				else
-				{
-					result += char(start - 1) + char(end + 1);
-				}
-
-				forward = false;
+				// resetting our start and end to the current letter
+				start = str[current];
+				end = str[current];
 			}
-			else if (backward)
+			else if (str[current] == char(end + 1))
 			{
-				if (!result.empty() && result[result.length() - 1] == char(start + 1))
-				{
-					result += char(end - 1);
-
-				}
-				else
-				{
-					result += char(start + 1) + char(end - 1);
-				}
-
-				backward = false;
+				end = str[current];
 			}
-
-			start = str[current];
-			end = str[current];
+			else if (str[current] == char(end - 1))
+			{
+				end = str[current];
+			}
 		}
+	}
+
+	// final condition in case last character is part of a sequence that was not analyzed
+	if (end >= 'a' && end <= 'z')
+	{
+		sequenceBreak(result, start, end, forward, backward);
 	}
 
 	return result;
 }
 
+// helper function that will update our result when a sequence breaks due to different alphabetical characters
+void sequenceBreak(string& result, char start, char end, bool& forward, bool& backward)
+{
+	// checking the direction
+	if (forward)
+	{
+		// avoiding repeats
+		if (!result.empty() && result[result.length() - 1] == char(start - 1))
+		{
+			result.push_back(char(end + 1));
+		}
+		else
+		{
+			result.push_back(char(start - 1));
+			result.push_back(char(end + 1));
+		}
+
+		forward = false;
+	}
+	else if (backward)
+	{
+		if (!result.empty() && result[result.length() - 1] == char(start + 1))
+		{
+			result.push_back(char(end - 1));
+		}
+		else
+		{
+			result.push_back(char(start + 1));
+			result.push_back(char(end - 1));
+		}
+
+		backward = false;
+	}
+}
+
 int main() 
 {
 	cout << AlphabetRunEncryption("cdefghijklmnnmlkjihgfedcb") << endl; // boa
-	//cout << AlphabetRunEncryption("bcdefghijklmnopqrstN") << endl; // att
-	//cout << AlphabetRunEncryption("abSbaSaNbR") << endl; // abaac
+	cout << AlphabetRunEncryption("bcdefghijklmnopqrstN") << endl; // att
+	cout << AlphabetRunEncryption("abSbaSaNbR") << endl; // abaac
+	cout << AlphabetRunEncryption("defghijklmnnmlkjihgfedeS") << endl; // code
 	return 0;
 }

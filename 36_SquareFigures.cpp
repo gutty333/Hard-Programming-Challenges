@@ -35,7 +35,7 @@ long long SquareFigures(int num)
 		length *= 10;
 	}
 
-	// getting start number through square root to avoid having to do a O(n) approach
+	// getting start number through square root to avoid having to do a linear approach
 	long long start = sqrt(length);
 	long long squaredResult = pow(start, 2);
 
