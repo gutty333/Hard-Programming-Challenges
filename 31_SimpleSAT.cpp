@@ -9,10 +9,8 @@ A Boolean formula will always have at most 5 letters, i.e. a, b, c, d and e. A t
 #include <string>
 using namespace std;
 
+// NOT FINISHED
 
-/*
-
-*/
 string SimpleSAT(string str) 
 {
 

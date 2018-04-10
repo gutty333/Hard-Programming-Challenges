@@ -7,7 +7,7 @@ have the function StepWalking(num) take the num parameter being passed which wil
 #include <string>
 using namespace std;
 
-
+// NOT FINISHED
 
 int StepWalking(int num) 
 {

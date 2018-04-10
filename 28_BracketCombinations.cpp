@@ -7,6 +7,8 @@ have the function BracketCombinations(num) read num which will be an integer gre
 #include <string>
 using namespace std;
 
+// NOT FINISHED
+
 int BracketCombinations(int num) 
 {
 

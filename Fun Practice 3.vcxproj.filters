@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="37_AlphabetRunEncryption.cpp">
+    <ClCompile Include="32_MatrixDeterminant.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -9,6 +9,7 @@ For the input above, you can see the bolded 1's create the largest rectangular s
 #include <string>
 using namespace std;
 
+// NOT FINISHED
 
 string MaximalRectangle(string strArr[], int size) 
 {

@@ -7,6 +7,8 @@ have the function IntersectingLines(strArr) take strArr which will be an array o
 #include <string>
 using namespace std;
 
+// NOT FINISHED
+
 string IntersectingLines(string strArr[]) 
 {
 
