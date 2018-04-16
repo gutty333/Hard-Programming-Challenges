@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="32_MatrixDeterminant.cpp">
+    <ClCompile Include="40_MatrixBorder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

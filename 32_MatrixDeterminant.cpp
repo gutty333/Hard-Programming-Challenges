@@ -8,17 +8,10 @@ have the function MatrixDeterminant(strArr) read strArr which will be an array o
 #include <vector>
 #include <sstream>
 #include <algorithm>
-#include <map>
-#include <iterator>
 using namespace std;
 
-vector <int> results;
-vector <int> finalResults;
-int calculator(vector < vector<int> >, int);
-map <int, vector < vector<int> > > table;
+int calculator(vector < vector<int> >);
 int getSum(vector <int>);
-
-
 
 /*
 first step is to pass the contents of the input array into a matrix layout
@@ -33,16 +26,13 @@ base case will be when the matrix is 2x2
 at each iteration of the recursive method
 we keep track of whether leading value that is multiplied by determinant is positive or negative
 we continue to break the matrix down until we reach base case
-matrix are broken down based on the rule that is must not be in the same row or column of leading value
+matrix is broken down based on the rule that is must not be in the same row or column of leading value
 
 This algorithm follows the Laplace Expansion rule
 Reference used https://www.mathsisfun.com/algebra/matrix-determinant.html
 */
 int MatrixDeterminant(string strArr[], int size) 
 {
-	table.clear();
-	results.clear();
-	finalResults.clear();
 	vector < vector <int> > matrix;
 	vector <int> temp;
 
@@ -80,38 +70,9 @@ int MatrixDeterminant(string strArr[], int size)
 		}
 	}
 
-	cout << endl << "ORIGINAL" << endl;
-	for (int row2 = 0; row2 < matrix.size(); row2++)
-	{
-		for (int col2 = 0; col2 < matrix.size(); col2++)
-		{
-			cout << matrix[row2][col2] << " ";
-		}
-		cout << endl;
-	}
-
-	// performing the calculation
-	/*if (matrix.size() >= 4)
-	{
-		
-		calculator(matrix, matrix.size());
-		cout << endl << endl;
-		for (int x = 0; x < finalResults.size(); x++)
-		{
-			cout << finalResults[x] << " ";
-		}
-		cout << endl << endl;
-		return getSum(finalResults);
-	}
-	else
-	{
-		return calculator(matrix, matrix.size());
-	}*/
-
-	return calculator(matrix, matrix.size());
-	
+	// getting the result
+	return calculator(matrix);
 }
-
  
 /*
 Determinant calculator method
@@ -120,28 +81,23 @@ based on the square size it will either perform the calculation when size of mat
 or continue to break down a matrix 
 it keeps track of leading value and whether we add or subtract
 */
-int calculator(vector < vector<int> > currentMatrix, int size)
+int calculator(vector < vector<int> > currentMatrix)
 {
 	// base case when a matrix is 2x2
 	if (currentMatrix.size() == 2)
 	{
-		cout << "\t\t\tWE DID THE MATH FOR A 2x2 and GOT " << (currentMatrix[0][0] * currentMatrix[1][1]) - (currentMatrix[0][1] * currentMatrix[1][0]) << endl;
-
 		return (currentMatrix[0][0] * currentMatrix[1][1]) - (currentMatrix[0][1] * currentMatrix[1][0]);
 	}
 
 	// flag to keep track of whether to add or subtract
 	bool positiveSign = true;
 
+	// list to store results, for calculating after
+	vector <int> result;
+
 	// traversing all the leading values for the current matrix
 	for (int row = 0; row < 1; row++)
 	{
-		if (currentMatrix.size() >= 4)
-		{
-			cout << "HI THIS IS ANOTHER BUSTER----------------" << endl;
-			results.clear();
-		}
-
 		for (int col = 0; col < currentMatrix.size(); col++)
 		{
 			// getting the leading value and determine if we add or subtract
@@ -190,89 +146,19 @@ int calculator(vector < vector<int> > currentMatrix, int size)
 					temp.clear();
 				}
 			}
-
 			
-			results.push_back(leadingValue * calculator(newMatrix, size));
-			cout << "\t\t\t\tLEADING VALUE WAS " << leadingValue << endl;
-			for (int x = 0; x < results.size(); x++)
-			{
-				cout << results[x] << " ";
-			}
-			cout << endl << endl;
+			// adding result for this leading value into a list
+			result.push_back(leadingValue * calculator(newMatrix));
 
-			
-			if (currentMatrix.size() >= 4)
-			{
-				cout << "---------------HELLO BUSTER---------------" << endl;
-				if (finalResults.size() >= 4)
-				{
-					finalResults.erase(finalResults.begin(), finalResults.begin() + 4);
-				}
-
-				finalResults.push_back(results[results.size() - 1]);
-				
-				cout << "BUT THIS FINAL HAS --------" << endl;
-				for (int x = 0; x < finalResults.size(); x++)
-				{
-					cout << finalResults[x] << " ";
-				}
-				cout << endl;
-				results.clear();
-			}
-
-			//// dynamic technique to avoid having to solve sub problems we encountered before
-			//bool unique = true;
-
-			//// check out table to analyze if current sub problem has already been solved
-			//for (map<int, vector< vector<int> > >::iterator current = table.begin(); current != table.end(); current++)
-			//{
-
-			//	// condition checking if the new matrix built along side its leading value is unique
-			//	if (current->first == leadingValue && current->second == newMatrix)
-			//	{
-			//		cout << "\t\t\tSORRY THIS COMBINATION HAS BEEN DONE ALREADY" << endl;
-			//		unique = false;
-			//		break;
-			//	}
-			//}
-
-
-			//if (unique)
-			//{
-
-			//	results.push_back(leadingValue * calculator(newMatrix,size));
-
-
-			//	//// recursive call to solve for this leading value and its possible determinant matrix
-			//	//// again if base case is not reached, we again perform the same operations on the newly build matrix
-			//	//return leadingValue * calculator(newMatrix, size);
-			//	//
-
-			//	//cout << "\t\t\t\t\t\t*" << endl;
-			//	//// adding the new content to our table to avoid solving a repeated sub problem
-			//	//table[leadingValue] = newMatrix;
-			//}
-
-			// reset the matrix for the next leading value
+			// reset the new matrix
 			newMatrix.clear();
 		}
 	}
 
-
-	
-
-	if (currentMatrix.size() >= 4)
-	{
-		return getSum(finalResults);
-	}
-	else
-	{
-		return getSum(results);
-	}
+	return getSum(result);
 }
 
-
-
+// getSum method, returns the sum of a list
 int getSum(vector <int> results)
 {
 	int total = 0;
@@ -281,17 +167,8 @@ int getSum(vector <int> results)
 		total += results[x];
 	}
 
-	cout << "\t\t\tOUR TOTAL IS " << total << endl;
-	cout << endl << "FINAL HAS" << endl;
-	for (int x = 0; x < finalResults.size(); x++)
-	{
-		cout << finalResults[x] << " ";
-	}
-	cout << endl << endl;
-	results.clear();
 	return total;
 }
-
 
 int main() 
 {
@@ -310,19 +187,19 @@ int main()
 	string M[] = { "2", "6", "4", "<>", "6", "6", "1", "<>", "4", "8", "0" };
 	string N[] = { "2", "4", "5", "6", "<>", "4", "4", "5", "6", "<>", "5", "5", "0", "1", "<>", "6", "6", "1", "1" };
 
-	//cout << MatrixDeterminant(A, sizeof(A)/sizeof(A[0])) << endl;  // -2
-	//cout << MatrixDeterminant(B, sizeof(B) / sizeof(B[0])) << endl; // 25
-	//cout << MatrixDeterminant(C, sizeof(C) / sizeof(C[0])) << endl; // -4
-	//cout << MatrixDeterminant(D, sizeof(D) / sizeof(D[0])) << endl;  // -14
-	//cout << MatrixDeterminant(E, sizeof(E) / sizeof(E[0])) << endl;  // -306
-	//cout << MatrixDeterminant(F, sizeof(F) / sizeof(F[0])) << endl;  // -1
+	cout << MatrixDeterminant(A, sizeof(A)/sizeof(A[0])) << endl;  // -2
+	cout << MatrixDeterminant(B, sizeof(B) / sizeof(B[0])) << endl; // 25
+	cout << MatrixDeterminant(C, sizeof(C) / sizeof(C[0])) << endl; // -4
+	cout << MatrixDeterminant(D, sizeof(D) / sizeof(D[0])) << endl;  // -14
+	cout << MatrixDeterminant(E, sizeof(E) / sizeof(E[0])) << endl;  // -306
+	cout << MatrixDeterminant(F, sizeof(F) / sizeof(F[0])) << endl;  // -1
 	cout << MatrixDeterminant(G, sizeof(G) / sizeof(G[0])) << endl;  // 43
-	//cout << MatrixDeterminant(H, sizeof(H) / sizeof(H[0])) << endl;  // 49801192
-	//cout << MatrixDeterminant(I, sizeof(I) / sizeof(I[0])) << endl;  // -294
-	// cout << MatrixDeterminant(J, sizeof(J) / sizeof(J[0])) << endl;  // -2
-	//cout << MatrixDeterminant(K, sizeof(K) / sizeof(K[0])) << endl;  // 0
-	//cout << MatrixDeterminant(L, sizeof(L) / sizeof(L[0])) << endl;  // -148
-	//cout << MatrixDeterminant(M, sizeof(M) / sizeof(M[0])) << endl;  // 104
-	//cout << MatrixDeterminant(N, sizeof(N) / sizeof(N[0])) << endl;  // -62
+	cout << MatrixDeterminant(H, sizeof(H) / sizeof(H[0])) << endl;  // 49801192
+	cout << MatrixDeterminant(I, sizeof(I) / sizeof(I[0])) << endl;  // -294
+	cout << MatrixDeterminant(J, sizeof(J) / sizeof(J[0])) << endl;  // -2
+	cout << MatrixDeterminant(K, sizeof(K) / sizeof(K[0])) << endl;  // 0
+	cout << MatrixDeterminant(L, sizeof(L) / sizeof(L[0])) << endl;  // -148
+	cout << MatrixDeterminant(M, sizeof(M) / sizeof(M[0])) << endl;  // 104
+	cout << MatrixDeterminant(N, sizeof(N) / sizeof(N[0])) << endl;  // -62
 	return 0;
 }
