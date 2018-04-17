@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="40_MatrixBorder.cpp">
+    <ClCompile Include="41_ArrayJumping.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
