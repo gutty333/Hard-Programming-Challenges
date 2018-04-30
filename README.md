@@ -7,3 +7,4 @@ Longest Common Subsequence
 Graph Traversal (DFS and BFS)  
 Chess Algorithms  
 Greedy Algorithms  
+Matrix Determinant  
