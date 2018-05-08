@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="41_ArrayJumping.cpp">
+    <ClCompile Include="31_SimpleSAT.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
