@@ -9,130 +9,113 @@ For example: if arr is [16, 22, 35, 8, 20, 1, 21, 11], then your program should 
 #include <string>
 #include <vector>
 #include <sstream>
+#include <algorithm>
+#include <numeric>
 using namespace std;
 
 
 // NOT FINISHED
 
-
-// bubble sort 
-void bubblesort(int arr[], int size)
-{
-	bool swap;
-
-	do
-	{
-		swap = false;
-
-		for (int x = 0; x < size - 1; x++)
-		{
-			if (arr[x] > arr[x + 1])
-			{
-				int temp = arr[x];
-				arr[x] = arr[x + 1];
-				arr[x + 1] = temp;
-
-				swap = true;
-			}
-		}
-	} while (swap);
-}
-
-
-// int to string conversion
-void intToString(int set[], int size, string & result)
-{
-	for (int x = 0; x < size; x++)
-	{
-		stringstream convert;
-		convert << set[x];
-		result += convert.str();
-		result += ",";
-	}
-}
-
 /*
-A strategy we can use here is to apply a greedy approach
-
-since our input we be set to an even size we can break it in half and that will decide what the size of our sets will be
-
-With a greedy technique we can avoid having to do a brute force approach which would result in exponential time, since we would first check for possible sums, than split it into 2 sets and check again if those sets equal that possible sum. We would have to continue repeating this step until all possible options have been checked.
+first add up all the values of the input array
+we divide by 2 to check if is possible to split into 2 sets
 
 With my strategy we first sort our values in increasing order
 Our selection for the sets will be, select the lowest and highest value and add it to one of the sets
 we update our indexes and now select the current lowest and highest values and add it to the other set
 We repeat this step until all values have been copied to our sets.
-
-For these requirement we would sort our sets than pass the values of each to a string to return at the end
-
-if is not guarantee for the input to have size n > 2, we could set some base cases where
-if n == 0 return 0
-if n == 1 return -1
-if n == 2 check if both values are equal 
 */
-string ParallelSums(int arr[], int size) 
+string ParallelSums(int arr[], int size)
 {
-	// setting our 2 sets
-	int* set1 = new int[size / 2];
-	int* set2 = new int[size / 2];
+	// calculate total sum
+	int sum = 0;
+	int setSum;
+	for (int x = 0; x < size; x++)
+	{
+		sum += arr[x];
+	}
 
-	// we sort our input array
-	bubblesort(arr, size);
+	// check if input values can be split into 2 even sets
+	if (sum % 2 != 0)
+	{
+		return "-1";
+	}
+	else
+	{
+		setSum = sum / 2;
+	}
+
+	// making a copy of our input array to a vector for ease of use
+	// we will also sort the values in ascending order to apply our greedy approach
+	vector <int> values(arr,arr + size);
+	sort(values.begin(), values.end());
 
 	// indexes used for our selection we will also be collecting the sum for both sets
 	int low = 0; 
 	int high = size - 1;
-	int index1 = 0;
-	int index2 = 0;
+
+	vector <int> set1;
+	vector <int> set2;
+
+	// sum of each set
 	int sum1 = 0;
 	int sum2 = 0;
-
-	cout << "hi" << endl;
 
 	// loop to perform our greedy selection
 	while (low < high)
 	{
 		cout << "low is " << low << endl;
 		cout << "high is " << high << endl;
-		// copying the current lowest and highest to set 1
-		set1[index1++] = arr[low++];
-		sum1 += set1[index1 - 1];
-		set1[index1++] = arr[high--];
-		sum1 += set1[index1 - 1];
 
-		// copying the current lowest and highest to set 2
-		set2[index2++] = arr[low++];
-		sum2 += set2[index2 - 1];
-		set2[index2++] = arr[high--];
-		sum2 += set2[index2 - 1];
+		if (set1.size() + 1 < size / 2)
+		{
+			// copying the current lowest and highest to set 1
+			set1.push_back(values[low++]);
+			set1.push_back(values[high--]);
+
+			// copying the current lowest and highest to set 2
+			set2.push_back(values[low++]);
+			set2.push_back(values[high--]);
+		}
+
+		// special condition
+		int difference = setSum - accumulate(set1.begin(), set1.end(), 0);
+
+		// check which of the remaining values we select based on the different
+		if (values[low] == difference)
+		{
+			set1.push_back(values[low++]);
+			set2.push_back(values[high--]);
+		}
+		else
+		{
+			set2.push_back(values[low++]);
+			set1.push_back(values[high--]);
+		}
 	}
 
-	cout << "the sum of set 1 is " << sum1 << " the sum of set 2 is " << sum2 << endl;
+	string result = "";
 
-	// condition to check if the it can be divided into 2 sets
-	if (sum1 == sum2)
+	// sorting both sets
+	sort(set1.begin(), set1.end());
+	sort(set2.begin(), set2.end());
+
+	// storing both sets into a string
+	for (auto current : set1)
 	{
-		string result="";
-
-		// first we sort the values in increasing order
-		bubblesort(set1, size / 2);
-		bubblesort(set2, size / 2);
-
-		
-		// we copy the values from our set to our result string
-		intToString(set1, size / 2, result);
-		intToString(set2, size / 2, result);
-
-		// here we just edit last character to remove the comma
-		result.pop_back();
-
-		return result;
+		result += to_string(current);
+		result += ',';
 	}
-	else
+	for (auto current : set2)
 	{
-		return "-1";
+		result += to_string(current);
+		result += ',';
 	}
+	result.pop_back();
+
+	return result;
 }
+
 
 int main() 
 {
