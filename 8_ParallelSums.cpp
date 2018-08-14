@@ -16,11 +16,12 @@ using namespace std;
 
 // NOT FINISHED
 
+
 /*
 first add up all the values of the input array
 we divide by 2 to check if is possible to split into 2 sets
 
-With my strategy we first sort our values in increasing order
+If possible to get 2 sets we sort our values in increasing order
 Our selection for the sets will be, select the lowest and highest value and add it to one of the sets
 we update our indexes and now select the current lowest and highest values and add it to the other set
 We repeat this step until all values have been copied to our sets.
@@ -53,44 +54,47 @@ string ParallelSums(int arr[], int size)
 	// indexes used for our selection we will also be collecting the sum for both sets
 	int low = 0; 
 	int high = size - 1;
+	bool front = true; // flag signal to determine if we are getting the current lowest or highest
 
+	// our sets
 	vector <int> set1;
 	vector <int> set2;
-
-	// sum of each set
-	int sum1 = 0;
-	int sum2 = 0;
 
 	// loop to perform our greedy selection
 	while (low < high)
 	{
-		cout << "low is " << low << endl;
-		cout << "high is " << high << endl;
-
-		if (set1.size() + 1 < size / 2)
+		// special condition when only 2 choices are left
+		// will decide which value to apply to a set
+		if (low + 1 == high)
 		{
-			// copying the current lowest and highest to set 1
-			set1.push_back(values[low++]);
-			set1.push_back(values[high--]);
+			int currentSum = accumulate(set1.begin(), set1.end(), 0);
+			int difference = setSum - currentSum;
 
-			// copying the current lowest and highest to set 2
-			set2.push_back(values[low++]);
-			set2.push_back(values[high--]);
+			if (difference == values[low])
+			{
+				set1.push_back(values[low++]);
+				set2.push_back(values[high--]);
+			}
+			else
+			{
+				set1.push_back(values[high--]);
+				set2.push_back(values[low++]);
+			}
 		}
-
-		// special condition
-		int difference = setSum - accumulate(set1.begin(), set1.end(), 0);
-
-		// check which of the remaining values we select based on the different
-		if (values[low] == difference)
+		else if (front) 
 		{
+			// adding the lowest values from the input
 			set1.push_back(values[low++]);
-			set2.push_back(values[high--]);
+			set2.push_back(values[low++]);
+			
+			// update our flag signal
+			front = false; 
 		}
 		else
 		{
-			set2.push_back(values[low++]);
 			set1.push_back(values[high--]);
+			set2.push_back(values[high--]);
+			front = true;
 		}
 	}
 
@@ -122,10 +126,16 @@ int main()
 	int A[] = { 16, 22, 35, 8, 20, 1, 21, 11 };
 	int B[] = { 1, 2, 3, 4 };
 	int C[] = { 1, 2, 1, 5 };
+	int D[] = { 9, 1, 0, 5, 3, 2 };
+	int E[] = { 2, 3, 1, 9, 3, 4, 4, 4 };
+	int F[] = { 6, 2, 4, 1, 10, 25, 5, 3, 40, 4 };
 	
 	cout << ParallelSums(A, sizeof(A)/sizeof(A[0])) << endl; // 1,11,20,35,8,16,21,22
 	cout << ParallelSums(B, sizeof(B) / sizeof(B[0])) << endl; // 1,4,2,3
 	cout << ParallelSums(C, sizeof(C) / sizeof(C[0])) << endl; // -1
+	cout << ParallelSums(D, sizeof(D) / sizeof(D[0])) << endl; // 0,1,9,2,3,5
+	cout << ParallelSums(E, sizeof(E) / sizeof(E[0])) << endl; // 1,2,3,9,3,4,4,4
+	cout << ParallelSums(F, sizeof(F) / sizeof(F[0])) << endl; // 1,2,3,4,40,4,5,6,10,25
 	
 	return 0;
 }
